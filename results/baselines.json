@@ -1,0 +1,6 @@
+{
+  "baseline: always 'continue'": 0.423728813559322,
+  "baseline: always 'schedule'": 0.3220338983050847,
+  "baseline: always 'end'": 0.2542372881355932,
+  "baseline: last turn = end, else continue": 0.6779661016949152
+}

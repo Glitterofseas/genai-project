@@ -1,0 +1,27 @@
+# --- LLM / agents ---
+openai>=1.40
+langchain>=0.3
+langchain-openai>=0.2
+langchain-community>=0.3
+langchain-chroma>=0.2
+
+# --- vector store ---
+chromadb>=1.0
+pypdf>=5.0
+
+# --- schedule db ---
+SQLAlchemy>=2.0
+pyodbc>=5.0          # only needed for the live MSSQL backend
+
+# --- data / eval ---
+pandas>=2.0
+scikit-learn>=1.5
+matplotlib>=3.8
+
+# --- app ---
+streamlit>=1.40
+python-dotenv>=1.0
+
+# --- dev ---
+pytest>=8.0
+jupyter>=1.0

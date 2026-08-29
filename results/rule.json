@@ -1,0 +1,694 @@
+{
+  "name": "rule-based agent (no API)",
+  "accuracy": 0.7966101694915254,
+  "confusion": {
+    "continue": {
+      "continue": 15,
+      "schedule": 9,
+      "end": 1
+    },
+    "schedule": {
+      "continue": 0,
+      "schedule": 19,
+      "end": 0
+    },
+    "end": {
+      "continue": 1,
+      "schedule": 1,
+      "end": 13
+    }
+  },
+  "per_class": {
+    "continue": {
+      "precision": 0.9375,
+      "recall": 0.6,
+      "f1": 0.7317073170731707,
+      "support": 25
+    },
+    "schedule": {
+      "precision": 0.6551724137931034,
+      "recall": 1.0,
+      "f1": 0.7916666666666666,
+      "support": 19
+    },
+    "end": {
+      "precision": 0.9285714285714286,
+      "recall": 0.8666666666666667,
+      "f1": 0.896551724137931,
+      "support": 15
+    }
+  },
+  "predictions": [
+    {
+      "conversation_id": 1,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "exit",
+        "sched",
+        "info"
+      ],
+      "message": "Thanks for the detail. Could you tell me more about your Python experience?"
+    },
+    {
+      "conversation_id": 1,
+      "turn_id": 3,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Wednesday 03 Apr 2024 at 5:00 PM or Thursday 04 Apr 2024 at 9:00 AM?"
+    },
+    {
+      "conversation_id": 1,
+      "turn_id": 5,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Wednesday 03 Apr 2024 at 5:00 PM or Thursday 04 Apr 2024 at 9:00 AM?"
+    },
+    {
+      "conversation_id": 1,
+      "turn_id": 7,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "exit"
+      ],
+      "message": "Apologies - we don't have that day in the calendar. Could we do Tuesday 09 Apr 2024 at 10:00 AM or Tuesday 09 Apr 2024 at 11:00 AM instead?"
+    },
+    {
+      "conversation_id": 2,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "exit",
+        "sched",
+        "info"
+      ],
+      "message": "Thanks for the detail. Could you tell me more about your Python experience?"
+    },
+    {
+      "conversation_id": 2,
+      "turn_id": 3,
+      "expected": "continue",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Tuesday 30 Apr 2024 at 12:00 PM or Tuesday 30 Apr 2024 at 2:00 PM?"
+    },
+    {
+      "conversation_id": 2,
+      "turn_id": 5,
+      "expected": "continue",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Tuesday 30 Apr 2024 at 12:00 PM or Tuesday 30 Apr 2024 at 2:00 PM?"
+    },
+    {
+      "conversation_id": 2,
+      "turn_id": 7,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Tuesday 30 Apr 2024 at 12:00 PM or Tuesday 30 Apr 2024 at 2:00 PM?"
+    },
+    {
+      "conversation_id": 2,
+      "turn_id": 9,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "exit"
+      ],
+      "message": "Apologies - that slot has just been taken. Could we do Tuesday 07 May 2024 at 11:00 AM or Tuesday 07 May 2024 at 2:00 PM instead?"
+    },
+    {
+      "conversation_id": 3,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "exit",
+        "sched",
+        "info"
+      ],
+      "message": "Thanks for the detail. Could you tell me more about your Python experience?"
+    },
+    {
+      "conversation_id": 3,
+      "turn_id": 3,
+      "expected": "continue",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Wednesday 10 Apr 2024 at 5:00 PM or Thursday 11 Apr 2024 at 10:00 AM?"
+    },
+    {
+      "conversation_id": 3,
+      "turn_id": 5,
+      "expected": "continue",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Wednesday 10 Apr 2024 at 5:00 PM or Thursday 11 Apr 2024 at 10:00 AM?"
+    },
+    {
+      "conversation_id": 3,
+      "turn_id": 7,
+      "expected": "end",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "That time isn't available, unfortunately. Could we schedule your interview for Tuesday 16 Apr 2024 at 9:00 AM or Tuesday 16 Apr 2024 at 10:00 AM?"
+    },
+    {
+      "conversation_id": 4,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "exit",
+        "sched",
+        "info"
+      ],
+      "message": "Thanks for the detail. Could you tell me more about your Python experience?"
+    },
+    {
+      "conversation_id": 4,
+      "turn_id": 3,
+      "expected": "continue",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Sunday 28 Apr 2024 at 12:00 PM or Sunday 28 Apr 2024 at 1:00 PM?"
+    },
+    {
+      "conversation_id": 4,
+      "turn_id": 5,
+      "expected": "continue",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Sunday 28 Apr 2024 at 12:00 PM or Sunday 28 Apr 2024 at 1:00 PM?"
+    },
+    {
+      "conversation_id": 4,
+      "turn_id": 7,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "exit"
+      ],
+      "message": "Great, your interview is confirmed for Wednesday 01 May 2024 at 10:00 AM. You'll receive a calendar invite shortly."
+    },
+    {
+      "conversation_id": 5,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "exit",
+        "sched",
+        "info"
+      ],
+      "message": "Thanks for the detail. Could you tell me more about your Python experience?"
+    },
+    {
+      "conversation_id": 5,
+      "turn_id": 3,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Friday 26 Apr 2024 at 2:00 PM or Friday 26 Apr 2024 at 4:00 PM?"
+    },
+    {
+      "conversation_id": 5,
+      "turn_id": 5,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "exit"
+      ],
+      "message": "Understood - I'll close your application for now. Best of luck!"
+    },
+    {
+      "conversation_id": 6,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "exit",
+        "sched",
+        "info"
+      ],
+      "message": "Thanks for the detail. Could you tell me more about your Python experience?"
+    },
+    {
+      "conversation_id": 6,
+      "turn_id": 3,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Tuesday 16 Apr 2024 at 5:00 PM or Wednesday 17 Apr 2024 at 9:00 AM?"
+    },
+    {
+      "conversation_id": 6,
+      "turn_id": 5,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "exit"
+      ],
+      "message": "Apologies - that slot has just been taken. Could we do Friday 19 Apr 2024 at 1:00 PM or Friday 19 Apr 2024 at 4:00 PM instead?"
+    },
+    {
+      "conversation_id": 7,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "exit",
+        "sched",
+        "info"
+      ],
+      "message": "Thanks for the detail. Could you tell me more about your Python experience?"
+    },
+    {
+      "conversation_id": 7,
+      "turn_id": 3,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Friday 12 Apr 2024 at 1:00 PM or Friday 12 Apr 2024 at 3:00 PM?"
+    },
+    {
+      "conversation_id": 7,
+      "turn_id": 5,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Friday 12 Apr 2024 at 1:00 PM or Friday 12 Apr 2024 at 3:00 PM?"
+    },
+    {
+      "conversation_id": 7,
+      "turn_id": 7,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "exit"
+      ],
+      "message": "Great, your interview is confirmed for Tuesday 16 Apr 2024 at 10:00 AM. You'll receive a calendar invite shortly."
+    },
+    {
+      "conversation_id": 8,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "exit",
+        "sched",
+        "info"
+      ],
+      "message": "Thanks for the detail. Could you tell me more about your Python experience?"
+    },
+    {
+      "conversation_id": 8,
+      "turn_id": 3,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Wednesday 03 Apr 2024 at 1:00 PM or Wednesday 03 Apr 2024 at 3:00 PM?"
+    },
+    {
+      "conversation_id": 8,
+      "turn_id": 5,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Wednesday 03 Apr 2024 at 1:00 PM or Wednesday 03 Apr 2024 at 3:00 PM?"
+    },
+    {
+      "conversation_id": 8,
+      "turn_id": 7,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Wednesday 03 Apr 2024 at 1:00 PM or Wednesday 03 Apr 2024 at 3:00 PM?"
+    },
+    {
+      "conversation_id": 8,
+      "turn_id": 9,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "exit"
+      ],
+      "message": "Understood - I'll close your application for now. Best of luck!"
+    },
+    {
+      "conversation_id": 9,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "exit",
+        "sched",
+        "info"
+      ],
+      "message": "Thanks for the detail. Could you tell me more about your Python experience?"
+    },
+    {
+      "conversation_id": 9,
+      "turn_id": 3,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Thursday 18 Apr 2024 at 9:00 AM or Thursday 18 Apr 2024 at 12:00 PM?"
+    },
+    {
+      "conversation_id": 9,
+      "turn_id": 5,
+      "expected": "continue",
+      "predicted": "end",
+      "advisors": [
+        "exit"
+      ],
+      "message": "Great, your interview is confirmed for Tuesday 23 Apr 2024 at 10:00 AM. You'll receive a calendar invite shortly."
+    },
+    {
+      "conversation_id": 9,
+      "turn_id": 7,
+      "expected": "end",
+      "predicted": "continue",
+      "advisors": [
+        "exit",
+        "sched",
+        "info"
+      ],
+      "message": "Thanks for the detail. Could you tell me more about your Python experience?"
+    },
+    {
+      "conversation_id": 10,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "exit",
+        "sched",
+        "info"
+      ],
+      "message": "Thanks for the detail. Could you tell me more about your Python experience?"
+    },
+    {
+      "conversation_id": 10,
+      "turn_id": 3,
+      "expected": "continue",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Sunday 28 Apr 2024 at 10:00 AM or Sunday 28 Apr 2024 at 12:00 PM?"
+    },
+    {
+      "conversation_id": 10,
+      "turn_id": 5,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Sunday 28 Apr 2024 at 10:00 AM or Sunday 28 Apr 2024 at 12:00 PM?"
+    },
+    {
+      "conversation_id": 10,
+      "turn_id": 7,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "exit"
+      ],
+      "message": "Apologies - we don't have that day in the calendar. Could we do Tuesday 30 Apr 2024 at 9:00 AM or Tuesday 30 Apr 2024 at 10:00 AM instead?"
+    },
+    {
+      "conversation_id": 11,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "exit",
+        "sched",
+        "info"
+      ],
+      "message": "Thanks for the detail. Could you tell me more about your Python experience?"
+    },
+    {
+      "conversation_id": 11,
+      "turn_id": 3,
+      "expected": "continue",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Sunday 14 Apr 2024 at 4:00 PM or Sunday 14 Apr 2024 at 5:00 PM?"
+    },
+    {
+      "conversation_id": 11,
+      "turn_id": 5,
+      "expected": "continue",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Sunday 14 Apr 2024 at 4:00 PM or Sunday 14 Apr 2024 at 5:00 PM?"
+    },
+    {
+      "conversation_id": 11,
+      "turn_id": 7,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Sunday 14 Apr 2024 at 4:00 PM or Sunday 14 Apr 2024 at 5:00 PM?"
+    },
+    {
+      "conversation_id": 11,
+      "turn_id": 9,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "exit"
+      ],
+      "message": "Great - I'll confirm the exact time and send your calendar invite shortly."
+    },
+    {
+      "conversation_id": 12,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "exit",
+        "sched",
+        "info"
+      ],
+      "message": "Thanks for the detail. Could you tell me more about your Python experience?"
+    },
+    {
+      "conversation_id": 12,
+      "turn_id": 3,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Friday 26 Apr 2024 at 5:00 PM or Sunday 28 Apr 2024 at 10:00 AM?"
+    },
+    {
+      "conversation_id": 12,
+      "turn_id": 5,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Friday 26 Apr 2024 at 5:00 PM or Sunday 28 Apr 2024 at 10:00 AM?"
+    },
+    {
+      "conversation_id": 12,
+      "turn_id": 7,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "exit"
+      ],
+      "message": "Great, your interview is confirmed for Wednesday 01 May 2024 at 10:00 AM. You'll receive a calendar invite shortly."
+    },
+    {
+      "conversation_id": 13,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "exit",
+        "sched",
+        "info"
+      ],
+      "message": "Thanks for the detail. Could you tell me more about your Python experience?"
+    },
+    {
+      "conversation_id": 13,
+      "turn_id": 3,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Thursday 25 Apr 2024 at 5:00 PM or Friday 26 Apr 2024 at 9:00 AM?"
+    },
+    {
+      "conversation_id": 13,
+      "turn_id": 5,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "exit"
+      ],
+      "message": "Understood - I'll close your application for now. Best of luck!"
+    },
+    {
+      "conversation_id": 14,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "exit",
+        "sched",
+        "info"
+      ],
+      "message": "Thanks for the detail. Could you tell me more about your Python experience?"
+    },
+    {
+      "conversation_id": 14,
+      "turn_id": 3,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Tuesday 23 Apr 2024 at 9:00 AM or Tuesday 23 Apr 2024 at 10:00 AM?"
+    },
+    {
+      "conversation_id": 14,
+      "turn_id": 5,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Tuesday 23 Apr 2024 at 9:00 AM or Tuesday 23 Apr 2024 at 10:00 AM?"
+    },
+    {
+      "conversation_id": 14,
+      "turn_id": 7,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "exit"
+      ],
+      "message": "Great, your interview is confirmed for Tuesday 23 Apr 2024 at 10:00 AM. You'll receive a calendar invite shortly."
+    },
+    {
+      "conversation_id": 15,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "exit",
+        "sched",
+        "info"
+      ],
+      "message": "Thanks for the detail. Could you tell me more about your Python experience?"
+    },
+    {
+      "conversation_id": 15,
+      "turn_id": 3,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "exit",
+        "sched"
+      ],
+      "message": "Could we schedule your interview for Sunday 28 Apr 2024 at 10:00 AM or Sunday 28 Apr 2024 at 12:00 PM?"
+    },
+    {
+      "conversation_id": 15,
+      "turn_id": 5,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "exit"
+      ],
+      "message": "Understood - I'll close your application for now. Best of luck!"
+    }
+  ]
+}

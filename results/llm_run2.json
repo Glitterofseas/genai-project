@@ -1,0 +1,696 @@
+{
+  "name": "LLM agent",
+  "accuracy": 0.847457627118644,
+  "confusion": {
+    "continue": {
+      "continue": 23,
+      "schedule": 2,
+      "end": 0
+    },
+    "schedule": {
+      "continue": 6,
+      "schedule": 12,
+      "end": 1
+    },
+    "end": {
+      "continue": 0,
+      "schedule": 0,
+      "end": 15
+    }
+  },
+  "per_class": {
+    "continue": {
+      "precision": 0.7931034482758621,
+      "recall": 0.92,
+      "f1": 0.851851851851852,
+      "support": 25
+    },
+    "schedule": {
+      "precision": 0.8571428571428571,
+      "recall": 0.631578947368421,
+      "f1": 0.7272727272727273,
+      "support": 19
+    },
+    "end": {
+      "precision": 0.9375,
+      "recall": 1.0,
+      "f1": 0.967741935483871,
+      "support": 15
+    }
+  },
+  "predictions": [
+    {
+      "conversation_id": 1,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "info",
+        "sched",
+        "exit"
+      ],
+      "message": "I\u2019m here to help you schedule an interview for the role. Please let me know your availability, and we can find a suitable time!"
+    },
+    {
+      "conversation_id": 1,
+      "turn_id": 3,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "info",
+        "sched"
+      ],
+      "message": "Let's schedule your interview for the Python Developer position. Are you available on Wednesday, April 3rd at 5:00 PM, or Thursday, April 4th at either 9:00 AM or 10:00 AM?"
+    },
+    {
+      "conversation_id": 1,
+      "turn_id": 5,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "sched"
+      ],
+      "message": "I understand! We have other slots available: Wednesday at 5 PM, Thursday at 9 AM, or Thursday at 10 AM. Which one works for you?"
+    },
+    {
+      "conversation_id": 1,
+      "turn_id": 7,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "sched",
+        "exit"
+      ],
+      "message": "I appreciate your interest, but it looks like we don't have any available slots at the moment. Thank you for your time!"
+    },
+    {
+      "conversation_id": 2,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "info",
+        "sched",
+        "exit"
+      ],
+      "message": "It looks like there are currently no available interview slots. Please check back later for updates or let me know if you have any questions!"
+    },
+    {
+      "conversation_id": 2,
+      "turn_id": 3,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "info",
+        "sched"
+      ],
+      "message": "Thanks for sharing your experience with Django and Flask. Do you have any questions about the Python Developer role?"
+    },
+    {
+      "conversation_id": 2,
+      "turn_id": 5,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "info",
+        "sched"
+      ],
+      "message": "I can definitely provide more information about our company's cloud technologies. We utilize a range of services to enhance our applications and infrastructure. What specific aspects are you curious about?"
+    },
+    {
+      "conversation_id": 2,
+      "turn_id": 7,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "sched"
+      ],
+      "message": "Great! We have the following slots available: Tuesday 30 Apr 2024 at 12:00 PM, 2:00 PM, or 3:00 PM. Which one works best for you?"
+    },
+    {
+      "conversation_id": 2,
+      "turn_id": 9,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "exit"
+      ],
+      "message": "Your interview for the Python Developer role is confirmed for next Tuesday at 10 AM. You'll receive a calendar invite shortly!"
+    },
+    {
+      "conversation_id": 3,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "info",
+        "sched",
+        "exit"
+      ],
+      "message": "It looks like there are currently no available interview slots. Please let me know if you have any questions or if there's anything else I can assist you with!"
+    },
+    {
+      "conversation_id": 3,
+      "turn_id": 3,
+      "expected": "continue",
+      "predicted": "schedule",
+      "advisors": [
+        "info",
+        "sched"
+      ],
+      "message": "Let's schedule your interview for the Python Developer role. Are you available on Wednesday, April 10th at 5:00 PM, or Thursday, April 11th at 10:00 AM or 12:00 PM?"
+    },
+    {
+      "conversation_id": 3,
+      "turn_id": 5,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "info"
+      ],
+      "message": "The current tech stack includes Python and SQL, with a focus on data engineering problems and building data pipelines. Would you like to schedule an interview to discuss this further?"
+    },
+    {
+      "conversation_id": 3,
+      "turn_id": 7,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "sched",
+        "exit"
+      ],
+      "message": "Thanks for your interest in scheduling an appointment! Unfortunately, I don't have any available interview slots at the moment. Please let me know if you'd like to suggest another time."
+    },
+    {
+      "conversation_id": 4,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "info",
+        "sched",
+        "exit"
+      ],
+      "message": "I see you're interested in the role! When you're ready, let me know if you have any questions or if you'd like to discuss interview options."
+    },
+    {
+      "conversation_id": 4,
+      "turn_id": 3,
+      "expected": "continue",
+      "predicted": "schedule",
+      "advisors": [
+        "info",
+        "sched"
+      ],
+      "message": "Let's schedule your interview for the Python Developer position. Are you available on Sunday, April 28th at 12:00 PM, 1:00 PM, or Tuesday, April 30th at 9:00 AM?"
+    },
+    {
+      "conversation_id": 4,
+      "turn_id": 5,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "info",
+        "sched",
+        "exit"
+      ],
+      "message": "The Python Developer position is fully remote. Would you like to proceed with scheduling an interview?"
+    },
+    {
+      "conversation_id": 4,
+      "turn_id": 7,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "exit"
+      ],
+      "message": "Your interview for the Python Developer position is confirmed for next Wednesday at 10 AM. You'll receive a calendar invite shortly!"
+    },
+    {
+      "conversation_id": 5,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "info",
+        "sched",
+        "exit"
+      ],
+      "message": "I see you're interested in the opportunity! Let me know if you have any questions or if you're ready to schedule an interview."
+    },
+    {
+      "conversation_id": 5,
+      "turn_id": 3,
+      "expected": "schedule",
+      "predicted": "continue",
+      "advisors": [
+        "info",
+        "sched"
+      ],
+      "message": "Thanks for sharing your experience with Python! Let's keep the conversation going. Is there anything specific you'd like to know about the role or the team?"
+    },
+    {
+      "conversation_id": 5,
+      "turn_id": 5,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "exit"
+      ],
+      "message": "Thank you for your interest, and I appreciate your response. If you change your mind in the future, feel free to reach out."
+    },
+    {
+      "conversation_id": 6,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "info",
+        "sched",
+        "exit"
+      ],
+      "message": "I see we haven't started our conversation yet. Whenever you're ready, feel free to ask any questions about the role or the interview process!"
+    },
+    {
+      "conversation_id": 6,
+      "turn_id": 3,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "info",
+        "sched"
+      ],
+      "message": "Let's schedule your interview for the Python Developer position. Are you available on Tuesday, April 16th at 5:00 PM, or Wednesday, April 17th at either 9:00 AM or 11:00 AM?"
+    },
+    {
+      "conversation_id": 6,
+      "turn_id": 5,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "exit"
+      ],
+      "message": "I've booked your interview for Friday at 11 AM, and you'll receive a calendar invite shortly. Looking forward to our chat!"
+    },
+    {
+      "conversation_id": 7,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "info",
+        "sched",
+        "exit"
+      ],
+      "message": "I\u2019m excited to connect with you! Let me know when you're available to discuss the role further."
+    },
+    {
+      "conversation_id": 7,
+      "turn_id": 3,
+      "expected": "schedule",
+      "predicted": "continue",
+      "advisors": [
+        "info",
+        "sched"
+      ],
+      "message": "That's great to hear about your experience with Django and Flask! If you have any questions about the role or the company, feel free to ask."
+    },
+    {
+      "conversation_id": 7,
+      "turn_id": 5,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "sched"
+      ],
+      "message": "I have availability on Friday, April 12, 2024, at 1:00 PM, 3:00 PM, or 4:00 PM. Do any of these times work for you?"
+    },
+    {
+      "conversation_id": 7,
+      "turn_id": 7,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "exit"
+      ],
+      "message": "Your interview for the Python Developer position is confirmed for next Tuesday at 10 AM. You'll receive a calendar invite shortly!"
+    },
+    {
+      "conversation_id": 8,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "info",
+        "sched",
+        "exit"
+      ],
+      "message": "I see we haven't connected yet. Whenever you're ready, feel free to reach out!"
+    },
+    {
+      "conversation_id": 8,
+      "turn_id": 3,
+      "expected": "schedule",
+      "predicted": "continue",
+      "advisors": [
+        "info",
+        "sched"
+      ],
+      "message": "Thanks for sharing your experience! Let's keep the conversation going\u2014do you have any specific projects or technologies you've worked on with Python that you're particularly proud of?"
+    },
+    {
+      "conversation_id": 8,
+      "turn_id": 5,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "sched"
+      ],
+      "message": "I understand! How about one of these slots on Wednesday: 1:00 PM, 3:00 PM, or 5:00 PM?"
+    },
+    {
+      "conversation_id": 8,
+      "turn_id": 7,
+      "expected": "schedule",
+      "predicted": "end",
+      "advisors": [
+        "exit"
+      ],
+      "message": "Thanks for your interest! Feel free to reach out if your availability changes or if you have any questions in the future."
+    },
+    {
+      "conversation_id": 8,
+      "turn_id": 9,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "exit"
+      ],
+      "message": "Thank you for your interest in the position. If you change your mind or have any questions in the future, feel free to reach out."
+    },
+    {
+      "conversation_id": 9,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "info",
+        "sched",
+        "exit"
+      ],
+      "message": "It looks like we don't have any available interview slots at the moment. If you're still interested, please let me know, and we can explore other options!"
+    },
+    {
+      "conversation_id": 9,
+      "turn_id": 3,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "info",
+        "sched"
+      ],
+      "message": "Let's schedule your interview for the Python Developer role. Are you available on Thursday, April 18th at 9:00 AM, 12:00 PM, or 2:00 PM?"
+    },
+    {
+      "conversation_id": 9,
+      "turn_id": 5,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "info"
+      ],
+      "message": "The Python Developer role involves brainstorming solutions, working on data engineering problems, and building data pipelines, while collaborating with teams to deliver high-quality software. It offers opportunities to tackle innovative projects using the latest technologies. Would you like to pick one of the available interview times?"
+    },
+    {
+      "conversation_id": 9,
+      "turn_id": 7,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "exit"
+      ],
+      "message": "Your interview is confirmed for Wednesday at 10 AM. You'll receive a calendar invite shortly."
+    },
+    {
+      "conversation_id": 10,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "info",
+        "sched",
+        "exit"
+      ],
+      "message": "It looks like we don't have any available interview slots at the moment. If you have any specific times in mind, feel free to share, and I'll do my best to accommodate!"
+    },
+    {
+      "conversation_id": 10,
+      "turn_id": 3,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "info",
+        "sched",
+        "exit"
+      ],
+      "message": "It's great to hear that you're eager to learn! While we typically look for more experience for this role, I encourage you to keep building your skills. If you have any questions or need resources, feel free to ask!"
+    },
+    {
+      "conversation_id": 10,
+      "turn_id": 5,
+      "expected": "schedule",
+      "predicted": "continue",
+      "advisors": [
+        "info",
+        "sched",
+        "exit"
+      ],
+      "message": "It sounds like you have a good foundation with AWS! If you have any questions about the Python Developer role or the company, feel free to ask."
+    },
+    {
+      "conversation_id": 10,
+      "turn_id": 7,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "sched",
+        "exit"
+      ],
+      "message": "Thanks for your response! Unfortunately, I can't book the Monday at 3 PM slot, but if you're available, we can try for this Friday at 11 AM or next Monday at 9 AM."
+    },
+    {
+      "conversation_id": 11,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "info",
+        "sched",
+        "exit"
+      ],
+      "message": "I see you're interested in the role! Let me know if you have any questions or if you'd like to schedule an interview."
+    },
+    {
+      "conversation_id": 11,
+      "turn_id": 3,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "info",
+        "sched",
+        "exit"
+      ],
+      "message": "That's great to hear about your experience with Python and AWS! Can you tell me about a project you've worked on that highlights your skills?"
+    },
+    {
+      "conversation_id": 11,
+      "turn_id": 5,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "info",
+        "sched",
+        "exit"
+      ],
+      "message": "It\u2019s great to hear about your experience with AWS! If you have any specific questions about the Python Developer role or the team, feel free to ask."
+    },
+    {
+      "conversation_id": 11,
+      "turn_id": 7,
+      "expected": "schedule",
+      "predicted": "continue",
+      "advisors": [
+        "sched",
+        "info",
+        "exit"
+      ],
+      "message": "I'm glad to hear you're interested! Would you like to discuss potential interview times?"
+    },
+    {
+      "conversation_id": 11,
+      "turn_id": 9,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "sched",
+        "exit"
+      ],
+      "message": "Your interview for the Python Developer role is confirmed for next Tuesday, and you\u2019ll receive a calendar invite shortly."
+    },
+    {
+      "conversation_id": 12,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "info",
+        "sched",
+        "exit"
+      ],
+      "message": "I\u2019m excited to help you with your interview process! Please let me know if you have any questions or if you're ready to schedule a time."
+    },
+    {
+      "conversation_id": 12,
+      "turn_id": 3,
+      "expected": "schedule",
+      "predicted": "continue",
+      "advisors": [
+        "info",
+        "sched",
+        "exit"
+      ],
+      "message": "Thanks for sharing your experience! Can you tell me about any specific projects you've worked on using Python?"
+    },
+    {
+      "conversation_id": 12,
+      "turn_id": 5,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "sched"
+      ],
+      "message": "I understand. How about we schedule a chat for Friday, April 26th at 5:00 PM, or on Sunday, April 28th at either 10:00 AM or 12:00 PM?"
+    },
+    {
+      "conversation_id": 12,
+      "turn_id": 7,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "sched",
+        "exit"
+      ],
+      "message": "Thanks for your flexibility! Since you've accepted the Wednesday at 10 AM slot, I'll send you a calendar invite shortly."
+    },
+    {
+      "conversation_id": 13,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "info",
+        "sched",
+        "exit"
+      ],
+      "message": "I see we haven't had a chance to chat yet. Let me know if you have any questions or if there's a good time for us to connect!"
+    },
+    {
+      "conversation_id": 13,
+      "turn_id": 3,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "info",
+        "sched"
+      ],
+      "message": "Let's schedule your interview for the Python Developer position. Are you available on Thursday, April 25th at 5:00 PM, or would Friday, April 26th at 9:00 AM or 12:00 PM work better for you?"
+    },
+    {
+      "conversation_id": 13,
+      "turn_id": 5,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "exit"
+      ],
+      "message": "Thank you for your time, and I wish you the best in your job search!"
+    },
+    {
+      "conversation_id": 14,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "info",
+        "sched",
+        "exit"
+      ],
+      "message": "It looks like there are currently no available interview slots. If you have any questions or need more information, feel free to ask!"
+    },
+    {
+      "conversation_id": 14,
+      "turn_id": 3,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "info",
+        "sched"
+      ],
+      "message": "Let's schedule your interview for the Python Developer role. Are you available on Tuesday, April 23, 2024, at 9:00 AM, 10:00 AM, or 4:00 PM?"
+    },
+    {
+      "conversation_id": 14,
+      "turn_id": 5,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "sched"
+      ],
+      "message": "I understand! How about we schedule the interview for Tuesday, April 23rd? I have slots available at 9:00 AM, 10:00 AM, and 4:00 PM. Let me know what works for you!"
+    },
+    {
+      "conversation_id": 14,
+      "turn_id": 7,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "sched",
+        "exit"
+      ],
+      "message": "Thanks for letting me know! Unfortunately, I don't have any available slots at Tuesday at 10 AM. Would you be open to Wednesday at 1 PM instead?"
+    },
+    {
+      "conversation_id": 15,
+      "turn_id": 1,
+      "expected": "continue",
+      "predicted": "continue",
+      "advisors": [
+        "info",
+        "sched",
+        "exit"
+      ],
+      "message": "I don't have any available interview slots at the moment. Please let me know if you'd like to check back later!"
+    },
+    {
+      "conversation_id": 15,
+      "turn_id": 3,
+      "expected": "schedule",
+      "predicted": "schedule",
+      "advisors": [
+        "info",
+        "sched"
+      ],
+      "message": "Let's schedule your interview for the Python Developer role. Are you available on Sunday, April 28, 2024, at 10:00 AM, 12:00 PM, or 1:00 PM?"
+    },
+    {
+      "conversation_id": 15,
+      "turn_id": 5,
+      "expected": "end",
+      "predicted": "end",
+      "advisors": [
+        "exit"
+      ],
+      "message": "Thank you for your time, and I wish you the best in your job search!"
+    }
+  ]
+}

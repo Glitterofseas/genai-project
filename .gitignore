@@ -1,0 +1,25 @@
+# --- secrets (MUST stay first) ---
+.env
+*.env
+!.env.example
+*api-key*.txt
+*apikey*.txt
+
+# --- python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# --- virtualenv ---
+.venv/
+venv/
+
+# --- project artifacts ---
+chroma_db/
+*.log
+.DS_Store
+
+# app working copy of the schedule (seeded from the committed data/schedule.sqlite)
+*.local.sqlite
