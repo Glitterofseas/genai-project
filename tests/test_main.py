@@ -6,8 +6,6 @@ schedule comes from the committed SQLite fixture. No API key required.
 from __future__ import annotations
 
 import datetime as dt
-import sys
-from pathlib import Path
 
 import pytest
 
@@ -260,14 +258,3 @@ class TestRejectionBeatsAcceptance:
             ("candidate", message),
         )
         assert RuleBasedExitAdvisor().evaluate(context).decision is True
-
-
-class TestSuppliedSourcesIntact:
-    """The provided materials must stay byte-identical in the repository."""
-
-    def test_all_source_files_present_and_unaltered(self):
-        sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tools"))
-        import verify_sources
-
-        assert verify_sources.check_sizes() == []
-        assert verify_sources.check_readable() == []

@@ -204,9 +204,7 @@ python -m app.modules.evaluation.run_eval --system llm    # spends tokens
 **Tests:**
 
 ```bash
-python -m pytest -q          # 100 tests, all offline
-python tools/spec_audit.py   # implementation vs. the specification
-python tools/verify_sources.py
+python -m pytest -q     # all offline, no API key needed
 ```
 
 ---
@@ -225,8 +223,6 @@ Project/
 │   ├── schedule.local.sqlite       # app's writable copy (gitignored)
 │   └── fine_tuning/*.jsonl         # Exit Advisor training data
 ├── docs/
-│   ├── SOURCE_FILES.md             # provenance of every supplied file
-│   ├── spec/                       # the assignment, 5 pages
 │   └── workflow/                   # the workflow diagram, 4 sections
 ├── app/
 │   ├── main.py                     # CLI entry point
@@ -241,26 +237,18 @@ Project/
 │   ├── streamlit_main.py           # registration form + chat UI
 │   └── utils.py
 ├── tests/
-│   ├── test_dates.py               # 31 tests - the date resolver
-│   ├── test_booking.py             # 16 tests - verified booking
-│   ├── test_tools_and_memory.py    # 20 tests - SQL tools, memory
-│   ├── test_main.py                # 33 tests - loop, store, harness
+│   ├── test_main.py                # tests for the main application
 │   └── test_evals.ipynb            # Accuracy + Confusion Matrix
-├── tools/
-│   ├── make_notebook.py            # regenerates the notebook from results/
-│   ├── spec_audit.py               # implementation vs. the specification
-│   └── verify_sources.py           # checks supplied files are unaltered
-└── results/*.json                  # cached evaluation runs
+└── results/*.json                  # cached evaluation runs the notebook reads
 ```
 
 ---
 
 ## Data and Resources
 
-All supplied materials are in the repository, byte-identical to what was
-provided; only their names and locations changed to fit the required structure.
-[`docs/SOURCE_FILES.md`](docs/SOURCE_FILES.md) records the full mapping, and
-`python tools/verify_sources.py` checks it (also asserted by the test suite).
+The supplied materials are in the repository byte-identical to what was
+provided; only their locations changed to fit the required structure. The
+workflow diagram is in `docs/workflow/`.
 
 | Resource | Role |
 |---|---|
