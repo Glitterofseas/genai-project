@@ -53,7 +53,10 @@ python -m app.modules.embedding.build_index
 
 ## Basic usage examples
 
-Run the Streamlit app:
+The app is deployed on the Streamlit Community Cloud:
+<https://genai-project-moran-amikan.streamlit.app/>
+
+Or run it locally:
 
 ```bash
 streamlit run streamlit_app/streamlit_main.py
