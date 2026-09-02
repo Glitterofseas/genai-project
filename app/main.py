@@ -1,12 +1,11 @@
 """Entry point for the SMS recruiting chatbot.
 
-    python -m app.main                 # chat in the terminal (LLM agent)
-    python -m app.main --agent rule    # chat with the free rule-based agent
+    python -m app.main                 # terminal chat, LLM agent
+    python -m app.main --agent rule    # the free rule-based agent
     python -m app.main --date 2024-04-30
 
-`--date` sets the conversation anchor. It matters: relative phrases like "next
-Friday" resolve against the conversation's own date, and the schedule covers
-2024 (from db_Tech.sql) plus the current and next year for live demos.
+--date sets the conversation anchor, which is what "next Friday" resolves
+against. The schedule covers 2024 plus the current and next year.
 """
 from __future__ import annotations
 
@@ -46,8 +45,7 @@ def run_cli(agent_kind: str, anchor_date: dt.date, position: str) -> None:
     store = get_store()
     agent = build_agent(agent_kind, store)
 
-    # LangChain-backed conversation memory holds the live dialogue and produces
-    # the context the advisors see.
+    # Memory holds the live dialogue and produces the advisors' context.
     memory = ConversationMemory(
         anchor=dt.datetime.combine(anchor_date, dt.time(10, 0)), position=position
     )

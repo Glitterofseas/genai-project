@@ -1,16 +1,9 @@
-"""Offline embedding step: the job description PDF -> a persistent Chroma index.
-
-The spec is explicit that this is separate from the chat loop: "Separately from
-the main process, we will carry out an offline embedding step, converting the
-provided PDF into vector representations stored in a Chroma database."
-
-Run once:
+"""Offline embedding step: the job description PDF into a Chroma index.
 
     python -m app.modules.embedding.build_index
 
-It is idempotent - re-running replaces the collection rather than duplicating
-it - and it is the ONLY place that pays for embeddings, so the chat loop never
-re-embeds the corpus.
+Run once. Idempotent - a re-run replaces the collection rather than duplicating
+it - and the only place embeddings are paid for; the chat loop never re-embeds.
 """
 from __future__ import annotations
 
@@ -33,8 +26,7 @@ def extract_pages(pdf_path=JOB_DESCRIPTION_PDF) -> list[str]:
     pages = []
     for page in reader.pages:
         text = page.extract_text() or ""
-        # The PDF renders bullets as U+FFFD; strip them so they do not become
-        # noise inside the embedded text.
+        # The PDF renders bullets as U+FFFD - strip them from the embedded text.
         text = text.replace("�", "-")
         text = re.sub(r"[ \t]+", " ", text)
         text = re.sub(r"\n{3,}", "\n\n", text)

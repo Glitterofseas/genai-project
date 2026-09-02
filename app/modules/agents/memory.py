@@ -1,13 +1,10 @@
 """Conversation memory, backed by LangChain chat message history.
 
-The resource list names "LangChain - Agents, Memories, Tool". This is the
-Memories part, and it is load-bearing rather than decorative: the CLI and the
-Streamlit app hold the live conversation here, and build the advisors'
-`ConversationContext` from it.
+The CLI and Streamlit app keep the live conversation here and build the
+advisors' context from it.
 
-It is deliberately NOT used by the evaluation harness. Evaluation is
-teacher-forced from the recorded transcripts, so a memory that accumulated state
-across replays would silently change the scores.
+Not used by the evaluation harness: that replays recorded transcripts, so
+memory carrying state between them would quietly shift the scores.
 """
 from __future__ import annotations
 
@@ -20,7 +17,7 @@ from ..db.rules import DEFAULT_POSITION
 from ..evaluation.dataset import Turn
 from .types import ConversationContext
 
-# The recruiter is the assistant in this conversation; the candidate is the human.
+# Recruiter maps to the assistant role, candidate to the human.
 RECRUITER = "recruiter"
 CANDIDATE = "candidate"
 

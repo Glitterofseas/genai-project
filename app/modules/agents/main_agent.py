@@ -1,16 +1,7 @@
 """The Main Agent: one turn of the conversation.
 
-Implements the loop drawn in docs/workflow/ exactly:
-
-    Receives and Process Input
-        -> Decides 1 of 3 Options          (route to ONE advisor)
-        -> advisor processes chat history, returns a binary verdict
-        -> Receives and Process Input
-        -> Decides 1 of 2 Options          (consult again | answer the user)
-        -> Sends Output to User
-
-The loop is capped so a router that keeps asking for advice cannot spin
-forever - and so per-turn cost stays bounded.
+Route to one advisor, read its verdict, then either consult another or reply -
+the loop from docs/workflow/. Capped so it can't spin, and to bound cost.
 """
 from __future__ import annotations
 
@@ -29,17 +20,17 @@ MAX_ADVISOR_CALLS = 3
 
 
 class Router(Protocol):
-    """The Main Agent's two decision diamonds."""
+    """The two decision points: which advisor, then whether to keep going."""
 
     def choose(
         self, context: ConversationContext, consulted: list[AdvisorVerdict]
     ) -> AdvisorName | None:
-        """Which advisor to consult next; None to answer immediately."""
+        """Which advisor next, or None to reply now."""
 
     def consult_again(
         self, context: ConversationContext, consulted: list[AdvisorVerdict]
     ) -> bool:
-        """After a verdict: loop back, or send output to the user?"""
+        """Loop back for more advice, or answer the candidate?"""
 
 
 class Composer(Protocol):
@@ -50,7 +41,7 @@ class Composer(Protocol):
         action: Action,
         booking=None,
     ) -> str:
-        """The SMS the candidate actually receives."""
+        """The SMS the candidate receives."""
 
 
 class MainAgent:
@@ -84,10 +75,9 @@ class MainAgent:
 
         action = action_from_verdicts(consulted)
 
-        # A conversation that ends because a slot was accepted must actually
-        # write that booking, and must not confirm a time the calendar does not
-        # have. Booking runs only on END and never changes the action, so the
-        # evaluation is unaffected by it.
+        # Ending on an accepted slot has to actually write the booking, and
+        # must not confirm a time the calendar lacks. Only runs on END, and
+        # never changes the action, so evaluation is unaffected.
         booking = None
         if action is Action.END and self.booker is not None:
             booking = self.booker.book_from(context)

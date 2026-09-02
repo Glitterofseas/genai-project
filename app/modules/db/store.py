@@ -1,15 +1,7 @@
-"""Access to the recruiter schedule.
+"""Recruiter schedule access.
 
-Two backends behind one interface (option C):
-
-  * sqlite  - a committed, deterministic fixture in data/schedule.sqlite.
-              The default, so the project is reproducible on any machine and
-              the evaluation numbers in the notebook are stable.
-  * mssql   - the live SQL Server built by data/db_Tech.sql, for demonstrating
-              the real T-SQL artefact.
-
-Both speak the same schema as dbo.Schedule:
-    ScheduleID, date, time, position, available
+Two backends, same schema as dbo.Schedule: the committed SQLite fixture
+(default) and the live SQL Server built by db_Tech.sql.
 """
 from __future__ import annotations
 
@@ -47,11 +39,7 @@ class Slot:
         return dt.datetime.combine(self.date, self.time)
 
     def label(self) -> str:
-        """Human-readable slot, e.g. 'Tuesday 07 May 2024 at 2:00 PM'.
-
-        Built by hand rather than with strftime because %-I (hour without a
-        leading zero) is not portable - it raises ValueError on Windows.
-        """
+        """e.g. 'Tuesday 07 May 2024 at 2:00 PM'. Hand-built: %-I isn't portable."""
         hour = self.time.hour
         suffix = "AM" if hour < 12 else "PM"
         display = hour % 12 or 12
@@ -72,9 +60,8 @@ def _row_to_slot(row: Sequence) -> Slot:
 class ScheduleStore:
     """Read/write access to the schedule.
 
-    `read_only` exists because the evaluation harness replays 15 conversations
-    through the real agent: without it, every replay would book slots and the
-    next run would see a different - permanently degraded - calendar.
+    read_only keeps the evaluation from booking slots as it replays; otherwise
+    each run would degrade the calendar for the next.
     """
 
     def __init__(self, read_only: bool = False):
@@ -94,10 +81,10 @@ class ScheduleStore:
 
     def check_slot(self, date: dt.date, time: dt.time,
                    position: str = DEFAULT_POSITION) -> Slot | None:
-        """The row for an exact slot, or None when the calendar has no such slot.
+        """The row for an exact slot, or None if there is no such slot.
 
-        None is meaningful: db_Tech.sql generates no Mondays or Saturdays, so a
-        Monday proposal is not 'unavailable', it simply does not exist.
+        None isn't the same as unavailable - there are no Mondays or Saturdays
+        in the calendar at all.
         """
         rows = self._query(
             "SELECT ScheduleID, date, time, position, available FROM Schedule "
@@ -109,12 +96,10 @@ class ScheduleStore:
     def nearest_available(self, target: dt.datetime, position: str = DEFAULT_POSITION,
                           n: int = 3, not_before: dt.datetime | None = None,
                           exclude: set[dt.datetime] | None = None) -> list[Slot]:
-        """The n available slots closest in time to `target`.
+        """The n available slots closest to `target`.
 
-        Spec: "it then suggests the three nearest available time slots".
-        `not_before` keeps suggestions in the conversation's future, and
-        `exclude` drops times already offered - a candidate who says "I can't
-        at that time" must not be handed the same slot back.
+        not_before keeps suggestions in the future; exclude drops times already
+        offered, so a declined slot isn't handed straight back.
         """
         floor = not_before or target
         window_lo = (floor - dt.timedelta(days=1)).date().isoformat()
@@ -133,7 +118,7 @@ class ScheduleStore:
     # ---------- writes ----------
 
     def book(self, schedule_id: int) -> bool:
-        """Mark a slot taken. A no-op that still records intent in read_only mode."""
+        """Mark a slot taken. Records intent but doesn't write when read_only."""
         self.attempted_bookings.append(schedule_id)
         if self.read_only:
             return True
@@ -144,10 +129,8 @@ class ScheduleStore:
 class SqliteScheduleStore(ScheduleStore):
     """SQLite-backed schedule.
 
-    `check_same_thread=False` plus an explicit lock is required because
-    Streamlit caches this object with @st.cache_resource and then reruns the
-    script on a different thread than the one that opened the connection.
-    Without it, the first message in the UI raises ProgrammingError.
+    Streamlit caches this and reruns on a different thread, so the connection
+    needs check_same_thread=False and a lock.
     """
 
     def __init__(self, path: Path, read_only: bool = False):
@@ -201,8 +184,7 @@ class MssqlScheduleStore(ScheduleStore):
 
     def _query(self, sql: str, params: Sequence = ()) -> list[Slot]:
         cur = self._conn.cursor()
-        # pyodbc uses the same '?' placeholder as sqlite3, so the SQL in the
-        # base class is portable as written.
+        # pyodbc uses the same '?' placeholder as sqlite3.
         cur.execute(sql, tuple(params)) if params else cur.execute(sql)
         return [_row_to_slot(r) for r in cur.fetchall()]
 
@@ -216,13 +198,10 @@ class MssqlScheduleStore(ScheduleStore):
 
 
 def working_copy_path(seed: Path) -> Path:
-    """Path to the app's writable copy of the schedule, created on first use.
+    """The app's writable copy, seeded from the committed fixture on first use.
 
-    data/schedule.sqlite is committed and is the reproducibility anchor: the
-    evaluation reads it and the notebook quotes numbers derived from it. But a
-    real booking has to write somewhere, and a demo that mutated the committed
-    file would leave the repository dirty and the published numbers unrepeatable.
-    So the app books against a gitignored copy seeded from it.
+    Bookings have to write somewhere, and the committed fixture is what the
+    evaluation reads - a demo must not touch it.
     """
     working = seed.with_name(seed.stem + ".local" + seed.suffix)
     if not working.exists() and seed.exists():
@@ -231,10 +210,9 @@ def working_copy_path(seed: Path) -> Path:
 
 
 def get_store(settings=None, read_only: bool = False) -> ScheduleStore:
-    """Build the store named by SCHEDULE_BACKEND, falling back to sqlite.
+    """Build the backend named by SCHEDULE_BACKEND, defaulting to sqlite.
 
-    Read-only callers (the evaluation harness) get the committed seed itself;
-    writable callers (the CLI and Streamlit app) get the working copy.
+    Read-only callers get the committed fixture, writable ones the working copy.
     """
     if settings is None:
         from ..config.settings import get_settings

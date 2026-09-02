@@ -1,18 +1,11 @@
-"""Build the JSONL training set for the fine-tuned Conversation Exit Advisor.
-
-Why all `end` labels, not just the disengaged ones
---------------------------------------------------
-The spec describes the Exit Advisor as protecting uninterested candidates from
-being chased. But only 4 of the 15 conversations end that way; the other 11 end
-because the candidate ACCEPTED a slot and the thread is done. Training on the
-disengagement cases alone leaves **2 positive examples** in the training split -
-below OpenAI's minimum and far below anything learnable.
-
-So the advisor owns "should this conversation end?" in both senses, which is
-also how the labels are actually distributed and how the workflow diagram draws
-it: a single binary node with no carve-out.
+"""JSONL training set for the fine-tuned Exit Advisor.
 
     python -m app.modules.fine_tuning.build_dataset
+
+Trained on all `end` labels, not only the disengaged ones. Only 4 of the 15
+conversations end that way; the rest end on an accepted slot. Training on
+disengagement alone leaves 2 positive examples - below OpenAI's minimum, and
+far below anything learnable.
 """
 from __future__ import annotations
 

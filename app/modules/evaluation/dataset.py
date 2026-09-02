@@ -1,13 +1,10 @@
 """Loading and slicing sms_conversations.json.
 
-Shape of the data (verified):
-    15 conversations, 103 turns - 59 recruiter, 44 candidate.
-    Only recruiter turns carry a label: continue 25 / schedule 19 / end 15.
-    Every conversation's final recruiter turn is labelled 'end'.
+15 conversations, 103 turns. Only the 59 recruiter turns are labelled:
+continue 25, schedule 19, end 15.
 
-That last fact matters for evaluation: a rule as dumb as "the last turn is
-always end" scores 15/15 on the end class, so `end` accuracy alone proves
-little. See the trivial baseline in the evaluation report.
+Every conversation's last recruiter turn is `end`, so "last turn is always end"
+scores 15/15 on that class - which is why `end` accuracy alone proves little.
 """
 from __future__ import annotations
 
@@ -48,12 +45,7 @@ class Conversation:
         return tuple(t for t in self.turns if t.label is not None)
 
     def history_before(self, turn_id: int) -> tuple[Turn, ...]:
-        """Turns preceding `turn_id`.
-
-        The evaluation is teacher-forced: each prediction sees the *recorded*
-        history, not the agent's own earlier output. That keeps every turn an
-        independent classification and stops one early mistake from cascading.
-        """
+        """Turns before `turn_id` - the recorded ones, not the agent's own."""
         return tuple(t for t in self.turns if t.turn_id < turn_id)
 
 

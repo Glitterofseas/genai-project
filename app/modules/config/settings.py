@@ -16,7 +16,7 @@ CHROMA_DIR = PROJECT_ROOT / "chroma_db"
 CONVERSATIONS_PATH = DATA_DIR / "sms_conversations.json"
 JOB_DESCRIPTION_PDF = DATA_DIR / "Python Developer Job Description.pdf"
 
-# Split is fixed and committed so every run and every grader sees the same numbers.
+# Fixed and committed, so every run sees the same numbers.
 TRAIN_CONVERSATION_IDS = tuple(range(1, 11))   # 1..10  -> 40 recruiter turns
 TEST_CONVERSATION_IDS = tuple(range(11, 16))   # 11..15 -> 19 recruiter turns
 

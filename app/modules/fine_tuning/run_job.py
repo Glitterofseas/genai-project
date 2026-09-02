@@ -4,10 +4,9 @@
     python -m app.modules.fine_tuning.run_job --status    # poll
     python -m app.modules.fine_tuning.run_job --wait      # poll until finished
 
-The resulting model id is written to fine_tuned_model.json, which IS committed.
-It is not a secret, and keeping it only in .env - which is gitignored - would
-mean anyone cloning the repository silently falls back to the few-shot advisor
-and never sees the fine-tuned one.
+The model id goes in fine_tuned_model.json, which is committed - it isn't a
+secret, and keeping it only in the gitignored .env would mean anyone cloning
+the repo silently falls back to the few-shot advisor.
 """
 from __future__ import annotations
 

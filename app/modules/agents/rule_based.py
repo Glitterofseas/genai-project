@@ -1,12 +1,7 @@
-"""Rule-based advisors: a free, deterministic implementation of the same contracts.
+"""Rule-based advisors implementing the same contracts, deterministically.
 
-Two jobs:
-
-1. Development. The whole orchestration loop can be built and tested without
-   spending a single token, and without an API key present.
-2. Evaluation baseline. Any LLM advisor must beat these to have earned its cost.
-   Reporting the LLM against a real baseline - rather than against nothing - is
-   what stops a mediocre score from looking impressive.
+Two uses: developing the loop without spending tokens, and giving the LLM a
+real baseline to beat rather than nothing.
 """
 from __future__ import annotations
 
@@ -49,10 +44,10 @@ REJECTION = re.compile(
 
 
 def previously_offered(context: ConversationContext) -> set[dt.datetime]:
-    """Every slot the recruiter has already put on the table this conversation.
+    """Slots the recruiter has already offered this conversation.
 
-    Re-offering a time the candidate has just declined reads as not listening,
-    and candidates decline at least once in a third of the transcripts.
+    Candidates decline at least once in a third of the transcripts, and
+    re-offering a declined time reads as not listening.
     """
     offered: set[dt.datetime] = set()
     for turn in context.history:
@@ -67,9 +62,8 @@ def previously_offered(context: ConversationContext) -> set[dt.datetime]:
 class RuleBasedExitAdvisor:
     """End / Don't End.
 
-    Fires on two distinct situations, because the labels contain both:
-      * the candidate has disengaged, and
-      * the candidate has just accepted a slot, so the thread is done.
+    Covers both cases in the labels: the candidate disengaged, or accepted a
+    slot and the thread is done.
     """
 
     name = AdvisorName.EXIT
@@ -78,10 +72,8 @@ class RuleBasedExitAdvisor:
         last = context.last_candidate_message
         if DISINTEREST.search(last):
             return AdvisorVerdict(self.name, True, "candidate has disengaged")
-        # A rejection outranks an acceptance: "Those slots don't work for me"
-        # contains "work for me", and reading that as a yes ends the
-        # conversation at exactly the moment the candidate is still trying to
-        # find a time.
+        # Rejection wins: "Those slots don't work for me" contains "work for
+        # me", and reading it as a yes ends the conversation mid-negotiation.
         if REJECTION.search(last):
             return AdvisorVerdict(self.name, False, "candidate declined the proposed time")
         if ACCEPTANCE.search(last) and self._slot_was_offered(context):
@@ -113,10 +105,8 @@ class RuleBasedSchedulingAdvisor:
         already_offered = self._recruiter_has_offered(context)
 
         # Scheduling is the recruiter's initiative, not a reply to a request:
-        # 10 of the 19 'schedule' turns land immediately after the candidate
-        # first describes their experience, with no prompting at all. The spec
-        # says so too - the bot must "drive the conversation toward the end
-        # goal: scheduling an interview".
+        # 10 of the 19 'schedule' turns follow the candidate's first answer
+        # with no prompting at all.
         if already_offered and REJECTION.search(last):
             rationale = "candidate rejected the proposed slot; offer alternatives"
         elif offers or SCHEDULING_INTENT.search(last):
@@ -126,7 +116,7 @@ class RuleBasedSchedulingAdvisor:
         else:
             return AdvisorVerdict(self.name, False, "a slot is already on the table")
 
-        # Only now does the SQL store get touched, per the workflow diagram.
+        # Only now is the SQL store touched.
         target = None
         if offers:
             date, time = offers[0]
@@ -190,7 +180,7 @@ class RuleBasedRouter:
         return None
 
     def consult_again(self, context, consulted):
-        # A positive verdict settles the turn; a negative one sends us back.
+        # A yes settles the turn; a no sends us back.
         return not consulted[-1].decision
 
 
@@ -224,8 +214,7 @@ class TemplateComposer:
         from .booking import BookingStatus
 
         if booking is None or booking.status is BookingStatus.UNCLEAR:
-            # No specific slot could be resolved, so promise a confirmation of
-            # the time rather than implying one has already been made.
+            # No slot resolved - promise to confirm rather than imply we have.
             return "Great - I'll confirm the exact time and send your calendar invite shortly."
         if booking.status is BookingStatus.BOOKED:
             return (

@@ -1,12 +1,8 @@
 """Turning an acceptance into an actual booking.
 
-Without this the bot says "your interview is confirmed" and nothing is ever
-written: `available` stays 1 and the same slot can be handed to every candidate.
-
-It also keeps the confirmation honest. Candidates routinely accept a time that
-was never offered - in the transcripts one accepts "Monday at 3 PM" when Mondays
-do not exist in the calendar at all - so the accepted slot is verified against
-the schedule before anything is confirmed.
+Without this the bot confirms interviews it never writes, and hands the same
+slot to everyone. It also verifies first: candidates accept times that were
+never offered, including Mondays, which the calendar has none of.
 """
 from __future__ import annotations
 
@@ -86,9 +82,8 @@ class SlotBooker:
     def _requested_datetime(context: ConversationContext) -> dt.datetime | None:
         """The time the candidate accepted.
 
-        Their own words win: if they name a time, that is what gets verified,
-        even when it differs from what was offered. Otherwise a bare "that
-        works" falls back to the single slot last put on the table.
+        Their own words win, even if they differ from what was offered. A bare
+        "that works" falls back to the last slot on the table.
         """
         last = context.last_candidate_message
         offers = dates.parse_offers(last, context.anchor)
@@ -100,8 +95,7 @@ class SlotBooker:
         if not recruiter_offers:
             return None
 
-        # "11 AM works" names a time but no day. Match it against what was
-        # actually offered - picking the date from the offer it refers to.
+        # "11 AM works" gives a time but no day - match it to an offer.
         bare_time = dates.parse_time(last)
         if bare_time is not None:
             matching = [(d, t) for d, t in recruiter_offers if t == bare_time]
@@ -110,7 +104,7 @@ class SlotBooker:
                 return dt.datetime.combine(date, time)
             return None
 
-        # A bare "that works" is only unambiguous when one slot was on the table.
+        # "that works" is only unambiguous with one slot on the table.
         if len(recruiter_offers) == 1:
             date, time = recruiter_offers[0]
             return dt.datetime.combine(date, time)

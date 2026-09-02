@@ -1,8 +1,7 @@
-"""Query side of the vector store, used by the Conversation Info Advisor.
+"""Query side of the vector store, for the Info Advisor.
 
-Per the workflow diagram the vector store is touched only after the Info
-Advisor has decided "Info Needed" - retrieval is never unconditional, so a
-turn that asks no question costs nothing.
+Only touched after the advisor decides information is needed, so a turn that
+asks no question costs nothing.
 """
 from __future__ import annotations
 

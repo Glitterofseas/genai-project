@@ -1,20 +1,10 @@
 """LangChain tools over the SQL schedule.
 
-Spec (Additional Implementation Steps): "Function Calling to interact with the
-SQL database. When the Scheduling Advisor retrieves available time slots, it
-analyzes the conversation context ... it then suggests the three nearest
-available time slots."
+Bound to the model, which decides when to call them and with what arguments.
 
-These are real tools: they are bound to the model, and the model chooses when to
-call them and with what arguments. Two rules shape the design:
-
-* **Read-only.** Booking is a write, and a model that can write to the calendar
-  can book an interview nobody agreed to. `SlotBooker` keeps writes
-  deterministic; the model only ever queries.
-* **The slots the composer uses come from tool execution, never from the model's
-  prose.** Every slot a tool returns is recorded on the toolkit, so the message
-  the candidate receives is built from real rows - a paraphrased time in the
-  agent's text output can never become an interview invitation.
+Read-only on purpose: a model that could write would book interviews nobody
+agreed to, so writes stay in SlotBooker. Every slot a tool returns is recorded
+on the toolkit, so offers come from real rows rather than the model's prose.
 """
 from __future__ import annotations
 
@@ -46,10 +36,10 @@ class NearestSlotsArgs(BaseModel):
 
 
 class ScheduleToolkit:
-    """Builds the schedule tools for one conversation turn.
+    """The schedule tools for one turn.
 
-    Bound to a context so the model never has to be told - or trusted with - the
-    conversation's anchor date or the position being recruited for.
+    Holds the context, so the model is never told - or trusted with - the anchor
+    date or the position.
     """
 
     def __init__(self, store: ScheduleStore, context: ConversationContext):

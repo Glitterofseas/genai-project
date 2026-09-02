@@ -1,17 +1,11 @@
-"""Prompt construction for the LLM agents.
+"""Prompts for the LLM agents.
 
-The spec names four prompting strategies; each is applied deliberately and is
-labelled where it appears:
+The four prompting strategies, and where each lives:
 
-  Roles              - every chain opens with a system role describing who the
-                       agent is and what single decision it owns.
-  Instruction Prompts- explicit, numbered decision rules rather than vague
-                       description, so the binary verdicts are reproducible.
-  Few-Shot Learning  - worked examples drawn ONLY from the training split
-                       (conversations 1-10), so the held-out five stay clean.
-  API Parameters     - temperature 0 and capped max_tokens for the classifiers
-                       (determinism, reproducible evaluation), a little warmth
-                       for the composer that writes candidate-facing copy.
+  Roles         every system prompt opens with the one decision it owns
+  Instructions  numbered rules, so the verdicts are reproducible
+  Few-shot      worked examples from the training split only
+  Parameters    temperature 0 for classifiers, a little warmth for the composer
 """
 from __future__ import annotations
 
@@ -20,7 +14,7 @@ from ..evaluation.dataset import Conversation, iter_labelled, split
 # --- API parameters -------------------------------------------------------
 CLASSIFIER_PARAMS = {"temperature": 0.0, "max_tokens": 200, "timeout": 30}
 COMPOSER_PARAMS = {"temperature": 0.4, "max_tokens": 160, "timeout": 30}
-# The tool-calling agent needs room for tool calls and a final answer.
+# The tool-calling agent needs room for calls plus a final answer.
 TOOL_AGENT_PARAMS = {"temperature": 0.0, "max_tokens": 400, "timeout": 45}
 
 MAX_HISTORY_TURNS = 10
@@ -37,12 +31,10 @@ def render_history(history, limit: int = MAX_HISTORY_TURNS) -> str:
 
 
 def _binary_examples(conversations: list[Conversation], positive_label: str, limit: int):
-    """Worked examples for one advisor's binary decision.
+    """Worked examples for one advisor's yes/no decision.
 
-    Each advisor owns a yes/no question, but the dataset labels turns 3-way, so
-    a label is projected onto the advisor that owns it:
-        exit  -> label == 'end'
-        sched -> label == 'schedule'
+    Labels are 3-way, so each is projected onto the advisor that owns it:
+    exit takes 'end', sched takes 'schedule'.
     """
     positives, negatives = [], []
     for conversation, turn in iter_labelled(conversations):
@@ -56,10 +48,9 @@ def _binary_examples(conversations: list[Conversation], positive_label: str, lim
 
 
 def few_shot_block(positive_label: str, yes_word: str, no_word: str, limit: int = 6) -> str:
-    """Few-shot examples, formatted for a system prompt.
+    """Few-shot examples for a system prompt.
 
-    Training conversations only - conversations 11-15 are never shown to the
-    model, so the held-out evaluation stays honest.
+    Training conversations only; 11-15 are never shown to the model.
     """
     train, _ = split()
     examples = _binary_examples(train, positive_label, limit)

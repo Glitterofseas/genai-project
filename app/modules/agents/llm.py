@@ -1,8 +1,6 @@
-"""LangChain implementations of the Main Agent, its Advisors, and the Composer.
+"""LangChain versions of the Main Agent, the advisors and the composer.
 
-Each advisor is a structured-output chain returning a strict binary verdict,
-mirroring the diagram: the advisor decides first, and only a positive decision
-triggers its tool (SQL for scheduling, the vector store for info).
+Each advisor decides yes/no first; only a yes triggers its tool.
 """
 from __future__ import annotations
 
@@ -68,17 +66,15 @@ def _binary_chain(system: str, few_shot: str, model: str | None = None):
 class LLMExitAdvisor:
     """End / Don't End.
 
-    `model` may be a fine-tuned model id; the contract is identical either way,
-    which is what lets the fine-tuned and few-shot variants be compared without
-    touching the rest of the system.
+    `model` can be a fine-tuned model id - same contract either way, so the two
+    variants can be swapped and compared.
     """
 
     name = AdvisorName.EXIT
 
     def __init__(self, model: str | None = None, use_few_shot: bool = True):
         self.model = model
-        # A fine-tuned model has the examples baked in; repeating them wastes
-        # tokens and can fight the tuning.
+        # A fine-tuned model already has the examples baked in.
         self.few_shot = (
             prompts.few_shot_block("end", "YES - end", "NO - continue")
             if use_few_shot and not model
@@ -119,22 +115,19 @@ class LLMSchedulingAdvisor:
         if not result.decision:
             return AdvisorVerdict(self.name, False, result.reason)
 
-        # Positive decision -> and only now is SQL queried.
+        # Only now is SQL queried.
         return self._with_slots(context, result.reason)
 
     def _with_slots(self, context: ConversationContext, reason: str) -> AdvisorVerdict:
-        """Phase 2: reach the SQL calendar through function calling.
+        """Phase 2: the SQL calendar, via function calling.
 
-        This is the "SQL Retrieve Sched Options" cylinder in the workflow
-        diagram, and it is entered only after the binary verdict above says
-        Sched. The model is given real tools and decides which to call and with
-        what arguments; the slots attached to the verdict are the rows those
-        tool calls returned, never anything the model wrote in prose.
+        Only reached on a yes. The slots attached below are the rows the tool
+        calls returned - never anything the model wrote in prose.
         """
         offers = dates.parse_offers(context.last_candidate_message, context.anchor)
 
-        # A local read, so the composer's "that time isn't available" prefix is
-        # reliable regardless of which tools the model chose to call.
+        # A local read, so the composer's "not available" prefix is reliable
+        # whichever tools the model chose to call.
         if offers:
             date, time = offers[0]
             exact = self.store.check_slot(date, time, context.position) if time else None
@@ -162,7 +155,7 @@ class LLMSchedulingAdvisor:
             reason += f"; tool calling unavailable ({type(exc).__name__})"
 
         if not slots:
-            # Never degrade below the deterministic behaviour.
+            # Fall back rather than degrade.
             slots = toolkit.fallback_slots(3)
         if toolkit.call_log:
             reason += f"; via {len(toolkit.call_log)} SQL tool call(s)"
@@ -170,10 +163,9 @@ class LLMSchedulingAdvisor:
         return AdvisorVerdict(self.name, True, reason, slots=slots, proposed=offers)
 
     def _agent(self, toolkit):
-        """A LangChain tool-calling agent bound to this turn's schedule tools.
+        """Tool-calling agent bound to this turn's schedule tools.
 
-        `create_agent` is LangChain 1.x's agent API - AgentExecutor now lives
-        only in the deprecated `langchain_classic` package.
+        create_agent is the LangChain 1.x API; AgentExecutor is deprecated.
         """
         return create_agent(
             _chat(self.model, **prompts.TOOL_AGENT_PARAMS),
@@ -219,8 +211,7 @@ class LLMRouter:
     def __init__(self, model: str | None = None):
         self.model = model
 
-    #  Consulting the same advisor twice in one turn wastes a call and tells the
-    #  agent nothing new, so the model is only ever offered what remains.
+    # Only ever offer advisors that haven't been consulted this turn.
     PRIORITY = (AdvisorName.EXIT, AdvisorName.SCHED, AdvisorName.INFO)
 
     def choose(self, context: ConversationContext, consulted) -> AdvisorName | None:
@@ -255,21 +246,18 @@ class LLMRouter:
         )
         answer = (result.advisor or "").strip().lower()
         if answer == "none":
-            # The bot exists to book interviews. Letting the router finish a turn
-            # without ever asking "should we propose a time?" is how every
-            # schedule turn gets missed, so that question is always asked.
+            # Finishing a turn without ever asking "should we propose a time?"
+            # is how every schedule turn gets missed.
             return AdvisorName.SCHED if AdvisorName.SCHED in remaining else None
         mapping = {a.value: a for a in AdvisorName}
         choice = mapping.get(answer)
-        # A model that names an exhausted advisor still has an open question -
-        # fall through to the next one by priority rather than giving up.
+        # Naming an exhausted advisor still means a question is open.
         if choice is None or choice in seen:
             return remaining[0]
         return choice
 
     def consult_again(self, context, consulted) -> bool:
-        # A positive verdict settles the turn. A negative one may still leave a
-        # question open, so the loop goes back to the routing diamond.
+        # A yes settles the turn; a no may still leave a question open.
         return not consulted[-1].decision
 
 

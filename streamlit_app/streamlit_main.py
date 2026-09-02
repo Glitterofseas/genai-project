@@ -2,8 +2,8 @@
 
     streamlit run streamlit_app/streamlit_main.py
 
-Two entry points, matching the workflow diagram: the candidate either fills the
-registration form or goes straight into the conversation.
+Two entry points, as in the workflow diagram: fill the registration form, or go
+straight into the conversation.
 """
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ from pathlib import Path
 
 import streamlit as st
 
-# Make the project importable when Streamlit runs this file by path.
+# Streamlit runs this by path, so the project root needs to be importable.
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from streamlit_app import utils  # noqa: E402

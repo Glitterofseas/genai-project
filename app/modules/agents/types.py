@@ -1,13 +1,7 @@
-"""Shared contracts for the Main Agent and its Advisors.
+"""Shared types for the Main Agent and its advisors.
 
-The shapes here follow the provided workflow diagram literally:
-
-  * The Main Agent routes to exactly ONE advisor per iteration, receives its
-    output, then decides whether to consult again or answer the candidate.
-  * Every advisor returns a BINARY verdict:
-        Exit  -> End Conversation / Don't End Conv
-        Sched -> Sched / Don't Sched      (SQL is queried only when Sched)
-        Info  -> Info Needed / Info Not Needed  (vector store only when Needed)
+One advisor per iteration, each returning a yes/no verdict, as in the workflow
+diagram. SQL and the vector store are only touched on a yes.
 """
 from __future__ import annotations
 
@@ -34,10 +28,10 @@ class AdvisorName(str, Enum):
 
 @dataclass
 class ConversationContext:
-    """Everything an advisor is allowed to see.
+    """What an advisor sees.
 
-    `anchor` is the conversation's own clock - the timestamp of the turn being
-    answered. All relative-date resolution hangs off it, never off wall time.
+    anchor is the conversation's clock, not wall time - "next Friday" resolves
+    against it.
     """
 
     history: tuple[Turn, ...]
@@ -59,7 +53,7 @@ class ConversationContext:
 
 @dataclass
 class AdvisorVerdict:
-    """A single advisor's binary answer plus whatever it retrieved."""
+    """An advisor's yes/no answer, plus anything it retrieved."""
 
     advisor: AdvisorName
     decision: bool
@@ -106,12 +100,10 @@ class Advisor(Protocol):
 
 
 def action_from_verdicts(verdicts: list[AdvisorVerdict]) -> Action:
-    """Collapse advisor verdicts into the one action the turn is graded on.
+    """Collapse the verdicts into the action this turn is graded on.
 
-    Exit outranks Sched: once ending is appropriate - whether the candidate has
-    just accepted a slot or has just declined - the turn is an `end`. That
-    ordering is what the labelled data shows, where 11 of 15 `end` turns follow
-    a successful booking rather than a rejection.
+    Exit wins over Sched. In the labelled data 11 of 15 `end` turns follow an
+    accepted slot rather than a rejection, so ending covers both.
     """
     for verdict in verdicts:
         if verdict.advisor is AdvisorName.EXIT and verdict.decision:

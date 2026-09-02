@@ -1,12 +1,9 @@
-"""Resolve the natural-language date/time phrases candidates actually use.
+"""Resolving the date phrases candidates actually use.
 
-Spec (Additional Implementation Steps): "if the user mentions 'next Friday', it
-infers the current date from the time the conversation took place and combines
-it with the user's input."  So every resolution is relative to an ANCHOR - the
-conversation's own timestamp - never to the wall clock.
+Everything resolves against an anchor - the conversation's own timestamp - not
+the wall clock, so "next Friday" means what it meant at the time.
 
-Deliberately rule-based, not LLM-based: it must be deterministic, free, and
-unit-testable.
+Rule-based rather than LLM-based so it stays deterministic and free.
 """
 from __future__ import annotations
 
@@ -22,8 +19,7 @@ WEEKDAYS = {
 }
 
 # The dataset uses U+202F NARROW NO-BREAK SPACE inside times ("10 AM").
-# Normalising every unicode space class to a plain space is what makes the
-# time regex below actually match real transcript text.
+# Normalising them to a plain space is what makes the time regex match.
 _SPACE_RE = re.compile(r"[\s  -​  　]+")
 
 _TIME_RE = re.compile(
@@ -41,10 +37,10 @@ MONTHS = {
 _DAY_ALT = "|".join(sorted(WEEKDAYS, key=len, reverse=True))
 _MONTH_ALT = "|".join(MONTHS)
 
-# Order is significant. An explicit "30 Apr 2024" must be matched before the
-# bare-weekday branch, and must swallow any weekday that precedes it: the bot's
-# own offers read "Tuesday 30 Apr 2024 at 11:00 AM", and resolving that
-# "Tuesday" as the *next* Tuesday would confirm an interview a week late.
+# Order matters: an explicit "30 Apr 2024" must match before the bare-weekday
+# branch and swallow any weekday in front of it. The bot's own offers read
+# "Tuesday 30 Apr 2024", and taking that "Tuesday" as the next one would
+# confirm the interview a week late.
 _DATE_RE = re.compile(
     r"\b(?:(?:" + _DAY_ALT + r")[a-z]*[,]?\s+)?"
     r"(?P<dmy_day>\d{1,2})\s+(?P<dmy_mon>" + _MONTH_ALT + r")[a-z]*\.?\s+(?P<dmy_year>\d{4})\b"
@@ -110,11 +106,11 @@ def _resolve_date_match(m: re.Match, anchor: dt.date) -> dt.date:
 
 
 def parse_offers(text: str, anchor: dt.datetime) -> list[tuple[dt.date, dt.time | None]]:
-    """Every date/time offer in the text, in order of appearance.
+    """Every date/time offer in the text, in order.
 
-    Recruiter turns routinely offer two slots in one message - "this Friday at
-    11 AM or next Monday at 9 AM" - so each date is paired with the time that
-    follows it and precedes the next date, never with a time from another offer.
+    Messages often hold two slots - "this Friday at 11 AM or next Monday at
+    9 AM" - so each date takes the time that follows it, not one from the
+    other offer.
     """
     text = normalise(text)
     date_matches = list(_DATE_RE.finditer(text))

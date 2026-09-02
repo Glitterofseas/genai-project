@@ -4,9 +4,8 @@
     python -m app.modules.evaluation.run_eval --system llm     # spends tokens
     python -m app.modules.evaluation.run_eval --system llm --exit-model ft:...
 
-Every run is scored on all 15 conversations and the JSON keeps per-turn rows, so
-train/held-out slices are computed afterwards without paying twice. The notebook
-reads these files rather than re-running the agent.
+Scored over all 15 conversations, with per-turn rows kept, so held-out slices
+cost nothing afterwards. The notebook reads these files instead of re-running.
 """
 from __future__ import annotations
 

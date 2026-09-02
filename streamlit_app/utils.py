@@ -54,8 +54,8 @@ def fine_tuned_model_id() -> str | None:
 def start_conversation(profile: dict) -> None:
     """Seed session state from the registration form.
 
-    The dialogue lives in LangChain-backed ConversationMemory; session state
-    just holds it across reruns.
+    The dialogue lives in ConversationMemory; session state just carries it
+    across reruns.
     """
     memory = ConversationMemory(
         anchor=dt.datetime.combine(profile["date"], dt.time(10, 0)),
@@ -98,9 +98,8 @@ def day_warning(date: dt.date) -> str | None:
 def index_exists() -> bool:
     """Cheap on-disk check.
 
-    Deliberately does NOT instantiate the retriever: building a Chroma client
-    plus an embeddings client takes seconds, and doing it just to render a
-    status line blocks the whole app on first paint.
+    Deliberately avoids building the retriever - a Chroma plus embeddings
+    client takes seconds, and blocks first paint if done for a status line.
     """
     from app.modules.config.settings import CHROMA_DIR
 

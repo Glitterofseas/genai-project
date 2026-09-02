@@ -1,18 +1,11 @@
 """Replay the labelled conversations and score the agent.
 
-Teacher forcing
----------------
-Each labelled recruiter turn is predicted from the RECORDED history that
-precedes it, not from the agent's own earlier messages. Every turn is therefore
-an independent classification, and one early mistake cannot cascade through the
-rest of the conversation. This is what the per-turn annotation in the dataset
-implies, and it is the only way turns stay comparable across systems.
+Teacher-forced: each turn is predicted from the recorded history before it, not
+from the agent's own earlier replies, so turns stay independent and one early
+mistake can't cascade.
 
-Read-only
----------
-The store is opened with read_only=True: replaying 15 conversations through a
-scheduling agent would otherwise book slots and mutate the calendar, so the
-second run would score differently from the first.
+The store is opened read-only, or replaying would book slots and the second run
+would score differently from the first.
 """
 from __future__ import annotations
 
@@ -136,11 +129,9 @@ def evaluate(agent, conversations: list[Conversation], name: str = "agent") -> R
     return Report(name=name, predictions=predictions)
 
 
-# ---------------------------------------------------------------------------
-# Trivial baselines. Without these, a good-looking confusion matrix on `end`
-# reads as a success - when in fact every conversation's last turn is `end`,
-# so a one-line rule already scores 100% on that class.
-# ---------------------------------------------------------------------------
+# Trivial baselines. Every conversation's last turn is `end`, so a one-line
+# rule already scores 100% on that class - without these for comparison, a good
+# confusion matrix reads as more than it is.
 
 
 class _ConstantAgent:

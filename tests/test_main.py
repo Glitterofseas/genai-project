@@ -225,8 +225,8 @@ class TestEvaluationHarness:
 class TestRejectionBeatsAcceptance:
     """'Those slots don't work for me' contains 'work for me'.
 
-    Both phrasings appear verbatim in the transcripts (conversations 8 and 12),
-    where the correct action is `schedule`, not `end`.
+    Both phrasings appear in conversations 8 and 12, where the right action is
+    `schedule`, not `end`.
     """
 
     @pytest.mark.parametrize(

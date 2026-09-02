@@ -1,25 +1,14 @@
-"""Build data/schedule.sqlite - the committed, reproducible schedule fixture.
+"""Build data/schedule.sqlite, the committed schedule fixture.
 
-Why this exists
----------------
-db_Tech.sql seeds availability with ABS(CHECKSUM(NEWID())), so *every run of the
-script produces a different calendar*. Evaluation numbers quoted in the README
-would not survive a re-run, by anyone, including the author. So the schedule is
-built once and frozen into a fixture that is committed to the repository.
+db_Tech.sql seeds availability with NEWID(), so every run of it produces a
+different calendar and no quoted number would survive a re-run. The schedule is
+therefore built once and frozen.
 
-Two sources:
+    --from-mssql   export 2024 from the live SQL Server (service must be up)
+    (default)      reproduce the same rules in Python, seeded and byte-stable
 
-  python -m app.modules.db.build_fixture --from-mssql
-      Export the 2024 rows from the live SQL Server built by db_Tech.sql, so the
-      fixture descends from the provided T-SQL artefact itself. Requires the
-      MSSQLSERVER service to be running.
-
-  python -m app.modules.db.build_fixture
-      Reproduce the same rules deterministically in Python. Identical schema,
-      distribution and calendar rules; seeded, so it is byte-stable.
-
-Either way the current-year rows are generated, because db_Tech.sql only covers
-2024 and a live demo needs bookable dates in the present.
+Either way the current-year rows are generated too - db_Tech.sql only covers
+2024, and a live demo needs bookable dates now.
 """
 from __future__ import annotations
 

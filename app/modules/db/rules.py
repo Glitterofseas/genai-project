@@ -1,7 +1,7 @@
 """Schedule rules, transcribed from data/db_Tech.sql.
 
-The T-SQL script is the source of truth; this module mirrors it so the same
-table can be reproduced deterministically for any year. Keep the two in sync.
+The T-SQL is the source of truth; this mirrors it so any year can be
+reproduced deterministically. Keep the two in sync.
 """
 from __future__ import annotations
 
@@ -35,21 +35,19 @@ def valid_dates(start: dt.date, end: dt.date):
 
 
 def _availability(rng: random.Random) -> int:
-    """Mirror the T-SQL expression:
+    """Mirror db_Tech.sql's availability expression.
 
-        (ABS(CHECKSUM(NEWID())) % 100 + ABS(CHECKSUM(NEWID())) % 100) / 200.0 >= 0.5
-
-    A sum of two uniforms thresholded at its own mean -> ~50% available, but
-    triangular rather than uniform, exactly as the original intends.
+    Two uniforms summed and thresholded at their mean: ~50% available, but
+    triangular rather than uniform, as the original intends.
     """
     return 1 if (rng.randint(0, 99) + rng.randint(0, 99)) / 200.0 >= 0.5 else 0
 
 
 def generate_rows(year: int, seed: int | None = None):
-    """Yield (date, time, position, available) tuples for a whole year.
+    """Yield (date, time, position, available) for a whole year.
 
-    Unlike NEWID(), this is seeded and therefore reproducible - which is what
-    makes the committed fixture and the evaluation numbers stable.
+    Seeded, unlike NEWID() - which is what keeps the committed fixture and the
+    evaluation numbers stable.
     """
     rng = random.Random(seed if seed is not None else year)
     for d in valid_dates(dt.date(year, 1, 1), dt.date(year, 12, 31)):
