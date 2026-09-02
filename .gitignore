@@ -1,5 +1,4 @@
 # --- secrets (MUST stay first) ---
-.env
 *.env
 !.env.example
 *api-key*.txt
