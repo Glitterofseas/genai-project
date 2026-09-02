@@ -144,7 +144,7 @@ Read these numbers with two caveats, both documented in the notebook:
 
 ```bash
 git clone <your-repo-url>
-cd Project
+cd genai-project
 python -m venv .venv
 .venv/Scripts/activate          # Windows;  source .venv/bin/activate on Unix
 pip install -r requirements.txt
@@ -212,9 +212,13 @@ python -m pytest -q     # all offline, no API key needed
 ## Project Structure
 
 ```text
-Project/
+genai-project/
+├── .gitignore
 ├── .env / .env.example        # secrets (gitignored) and its template
+├── LICENSE
+├── README.md
 ├── requirements.txt
+├── pytest.ini
 ├── data/
 │   ├── sms_conversations.json      # labelled evaluation set
 │   ├── Python Developer Job Description.pdf
@@ -336,8 +340,8 @@ find_nearest_interview_slots(around_date='2024-04-30', count=3)
 `ConversationMemory`, backed by LangChain's `InMemoryChatMessageHistory`, and
 build the advisors' context from it. Evaluation deliberately does not use it -
 the harness is teacher-forced from the recorded transcripts, so memory
-accumulating across replays would silently change the scores. A test asserts the
-harness never imports it.
+accumulating across replays would silently change the scores, and
+`app/modules/evaluation/harness.py` never imports it.
 
 **Prompting strategies** (`app/modules/agents/prompts.py`): roles in every
 system prompt, numbered instruction rules for reproducible verdicts, few-shot
