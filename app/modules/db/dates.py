@@ -130,26 +130,3 @@ def parse_offers(text: str, anchor: dt.datetime) -> list[tuple[dt.date, dt.time 
     return offers
 
 
-def parse_date(text: str, anchor: dt.date) -> dt.date | None:
-    """First date mentioned, resolved against the anchor."""
-    m = _DATE_RE.search(normalise(text))
-    return _resolve_date_match(m, anchor) if m else None
-
-
-def parse_datetime(text: str, anchor: dt.datetime) -> tuple[dt.date | None, dt.time | None]:
-    """First offer only. Either half may be None when the text does not say."""
-    offers = parse_offers(text, anchor)
-    if offers:
-        date, time = offers[0]
-        return date, time
-    return None, parse_time(text)
-
-
-def target_datetime(text: str, anchor: dt.datetime, default_hour: int = 9) -> dt.datetime | None:
-    """Best-effort single datetime, used as the centre for 'nearest slots'."""
-    date, time = parse_datetime(text, anchor)
-    if date is None and time is None:
-        return None
-    if date is None:
-        date = anchor.date()
-    return dt.datetime.combine(date, time or dt.time(default_hour))

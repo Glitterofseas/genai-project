@@ -9,7 +9,6 @@ from app.modules.agents.memory import ConversationMemory
 from app.modules.config.settings import get_settings
 from app.modules.db.rules import POSITIONS, is_valid_day
 from app.modules.db.store import get_store
-from app.modules.evaluation.dataset import Turn
 
 OPENING = (
     "Thanks for applying to our Python Developer opening. "

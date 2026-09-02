@@ -92,14 +92,6 @@ class ScheduleStore:
     def count(self) -> int:
         raise NotImplementedError
 
-    def slots_on(self, date: dt.date, position: str = DEFAULT_POSITION,
-                 available_only: bool = True) -> list[Slot]:
-        sql = ("SELECT ScheduleID, date, time, position, available FROM Schedule "
-               "WHERE position = ? AND date = ?")
-        if available_only:
-            sql += " AND available = 1"
-        return self._query(sql + " ORDER BY time", (position, date.isoformat()))
-
     def check_slot(self, date: dt.date, time: dt.time,
                    position: str = DEFAULT_POSITION) -> Slot | None:
         """The row for an exact slot, or None when the calendar has no such slot.

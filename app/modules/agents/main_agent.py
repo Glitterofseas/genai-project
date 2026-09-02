@@ -101,7 +101,3 @@ class MainAgent:
             booked_slot=booking.slot if booking else None,
             booking=booking,
         )
-
-    def predict_action(self, context: ConversationContext) -> Action:
-        """Action only - used by the evaluation harness."""
-        return self.decide(context).action

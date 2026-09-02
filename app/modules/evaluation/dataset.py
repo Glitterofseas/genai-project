@@ -34,10 +34,6 @@ class Turn:
     text: str
     label: Action | None
 
-    @property
-    def is_recruiter(self) -> bool:
-        return self.speaker == "recruiter"
-
 
 @dataclass(frozen=True)
 class Conversation:
@@ -105,15 +101,3 @@ def iter_labelled(conversations: list[Conversation]) -> Iterator[tuple[Conversat
     for conversation in conversations:
         for turn in conversation.labelled_turns:
             yield conversation, turn
-
-
-def describe(conversations: list[Conversation]) -> dict:
-    counts = {a: 0 for a in ACTIONS}
-    for _, turn in iter_labelled(conversations):
-        counts[turn.label] += 1
-    return {
-        "conversations": len(conversations),
-        "turns": sum(len(c.turns) for c in conversations),
-        "labelled_turns": sum(counts.values()),
-        "labels": counts,
-    }

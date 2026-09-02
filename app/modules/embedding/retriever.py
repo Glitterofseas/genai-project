@@ -31,16 +31,6 @@ class JobDescriptionRetriever:
         docs = self._store.similarity_search(query, k=k or self.k)
         return [d.page_content for d in docs]
 
-    def search_with_scores(self, query: str, k: int | None = None):
-        return self._store.similarity_search_with_score(query, k=k or self.k)
-
-    def context_block(self, query: str, k: int | None = None) -> str:
-        """Retrieved passages formatted for a prompt."""
-        passages = self.search(query, k)
-        if not passages:
-            return ""
-        return "\n\n".join(f"[{i}] {p}" for i, p in enumerate(passages, 1))
-
     def is_ready(self) -> bool:
         try:
             return bool(self._store.get().get("ids"))

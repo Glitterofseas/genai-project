@@ -9,8 +9,7 @@ import datetime as dt
 import random
 
 # db_Tech.sql: WHERE DATENAME(WEEKDAY,d) NOT IN ('Saturday','Monday')
-EXCLUDED_WEEKDAYS = {0, 5}          # Python: Monday=0 .. Sunday=6
-VALID_WEEKDAYS = {1, 2, 3, 4, 6}    # Tue, Wed, Thu, Fri, Sun
+VALID_WEEKDAYS = {1, 2, 3, 4, 6}    # Python weekdays: Tue, Wed, Thu, Fri, Sun
 
 # db_Tech.sql: SELECT CAST('09:00' AS TIME) ... WHERE t < '17:00'  -> 09:00..17:00 inclusive
 FIRST_HOUR, LAST_HOUR = 9, 17

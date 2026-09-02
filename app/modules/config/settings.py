@@ -11,12 +11,10 @@ PROJECT_ROOT = Path(__file__).resolve().parents[3]
 load_dotenv(PROJECT_ROOT / ".env")
 
 DATA_DIR = PROJECT_ROOT / "data"
-DOCS_DIR = PROJECT_ROOT / "docs"
 CHROMA_DIR = PROJECT_ROOT / "chroma_db"
 
 CONVERSATIONS_PATH = DATA_DIR / "sms_conversations.json"
 JOB_DESCRIPTION_PDF = DATA_DIR / "Python Developer Job Description.pdf"
-SCHEDULE_SQL_SCRIPT = DATA_DIR / "db_Tech.sql"
 
 # Split is fixed and committed so every run and every grader sees the same numbers.
 TRAIN_CONVERSATION_IDS = tuple(range(1, 11))   # 1..10  -> 40 recruiter turns
