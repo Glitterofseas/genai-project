@@ -7,6 +7,16 @@
 The model id goes in fine_tuned_model.json, which is committed - it isn't a
 secret, and keeping it only in the gitignored .env would mean anyone cloning
 the repo silently falls back to the few-shot advisor.
+
+NOTE: this cannot currently run. OpenAI retired self-serve fine-tuning, so
+jobs.create returns 403 training_not_available (checked 2 Sep 2026):
+
+    OpenAI is winding down the fine-tuning platform and your organization is
+    no longer able to create new fine-tuning training jobs.
+
+See https://developers.openai.com/api/docs/deprecations - the Exit Advisor
+falls back to few-shot prompting. The code is kept so the job runs unchanged
+if access returns.
 """
 from __future__ import annotations
 

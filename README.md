@@ -117,13 +117,18 @@ genai-project/
 
 The spec asks for the Exit Advisor to be fine-tuned. The training and validation
 files are built and committed (`data/fine_tuning/`), but the job cannot be
-created - OpenAI has wound down self-serve fine-tuning:
+created. OpenAI has retired self-serve fine-tuning, and the API refuses it with
+a 403 (checked 2 September 2026):
 
 > OpenAI is winding down the fine-tuning platform and your organization is no
 > longer able to create new fine-tuning training jobs.
+> `code: training_not_available`
 
-So the Exit Advisor uses few-shot prompting instead. If the account ever regains
-access, the job still launches with:
+Their deprecation notice is [here](https://developers.openai.com/api/docs/deprecations#update-to-openais-self-serve-fine-tuning).
+
+So the Exit Advisor uses few-shot prompting instead - the same training examples
+are shown to the model in the prompt rather than baked into a model. If the
+account ever regains access, the job still launches with:
 
 ```bash
 python -m app.modules.fine_tuning.run_job --launch
