@@ -113,6 +113,22 @@ genai-project/
 └── results/                  # saved evaluation runs that the notebook reads
 ```
 
+## Fine-tuning
+
+The spec asks for the Exit Advisor to be fine-tuned. The training and validation
+files are built and committed (`data/fine_tuning/`), but the job cannot be
+created - OpenAI has wound down self-serve fine-tuning:
+
+> OpenAI is winding down the fine-tuning platform and your organization is no
+> longer able to create new fine-tuning training jobs.
+
+So the Exit Advisor uses few-shot prompting instead. If the account ever regains
+access, the job still launches with:
+
+```bash
+python -m app.modules.fine_tuning.run_job --launch
+```
+
 ## License
 
 MIT - see [LICENSE](LICENSE).

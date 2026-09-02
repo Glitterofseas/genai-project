@@ -19,7 +19,6 @@ __pycache__/
 venv/
 
 # --- project artifacts ---
-chroma_db/
 *.log
 .DS_Store
 
