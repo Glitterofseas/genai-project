@@ -82,16 +82,31 @@ class SlotBooker:
     def _requested_datetime(context: ConversationContext) -> dt.datetime | None:
         """The time the candidate accepted.
 
-        Their own words win, even if they differ from what was offered. A bare
-        "that works" falls back to the last slot on the table.
+        Their own words win, except that a weekday on its own is read as the
+        offer it matches. A bare "that works" falls back to the last slot on
+        the table.
         """
         last = context.last_candidate_message
-        offers = dates.parse_offers(last, context.anchor)
-        for date, time in offers:
-            if time is not None:
-                return dt.datetime.combine(date, time)
-
         recruiter_offers = SlotBooker._last_recruiter_offers(context)
+
+        for date, time, loose_weekday in dates.parse_offers_with_source(last, context.anchor):
+            if time is None:
+                continue
+            if loose_weekday:
+                # "Tuesday at 11 AM" resolves to the NEXT Tuesday, so saying it
+                # on a Tuesday lands a week past the slot that was offered. Any
+                # offer we made with that day and time is the one they mean -
+                # not just the most recent, since candidates go back to earlier
+                # ones.
+                same = {
+                    d
+                    for d, t in SlotBooker._all_recruiter_offers(context)
+                    if t == time and d.weekday() == date.weekday()
+                }
+                if len(same) == 1:
+                    return dt.datetime.combine(same.pop(), time)
+            return dt.datetime.combine(date, time)
+
         if not recruiter_offers:
             return None
 
@@ -109,6 +124,18 @@ class SlotBooker:
             date, time = recruiter_offers[0]
             return dt.datetime.combine(date, time)
         return None
+
+    @staticmethod
+    def _all_recruiter_offers(context: ConversationContext):
+        """Every slot offered so far, earliest turn first."""
+        offers = []
+        for turn in context.history:
+            if turn.speaker != "recruiter":
+                continue
+            offers += [
+                (d, t) for d, t in dates.parse_offers(turn.text, context.anchor) if t
+            ]
+        return offers
 
     @staticmethod
     def _last_recruiter_offers(context: ConversationContext):

@@ -9,6 +9,7 @@ import datetime as dt
 
 import pytest
 
+from app.modules.agents.booking import SlotBooker
 from app.modules.agents.main_agent import MainAgent
 from app.modules.agents.rule_based import build_rule_based_agent
 from app.modules.agents.types import (
@@ -163,6 +164,68 @@ class TestScheduleStore:
         again = store.check_slot(slot.date, slot.time, slot.position)
         assert again.available, "read_only must not mutate the calendar"
         assert store.count() == before
+
+
+class TestAcceptedTimeMatchesTheOffer:
+    """A weekday the candidate names must land on the slot that was offered.
+
+    "Tuesday at 11 AM", said on Tuesday 30 Apr, used to resolve to 7 May - so
+    the bot booked an interview a week after the one it had just offered.
+    """
+
+    OFFER = (
+        "Could we schedule your interview for Tuesday 30 Apr 2024 at 11:00 AM "
+        "or Tuesday 30 Apr 2024 at 12:00 PM?"
+    )
+
+    def booked(self, store, reply: str):
+        context = ctx(("recruiter", self.OFFER), ("candidate", reply))
+        return SlotBooker(store).book_from(context)
+
+    def test_named_weekday_takes_the_offered_date(self, store):
+        result = self.booked(store, "Tuesday at 11 AM works for me.")
+        assert result.confirmed
+        assert result.slot.date == dt.date(2024, 4, 30)
+        assert result.slot.time == dt.time(11, 0)
+
+    def test_this_weekday_takes_the_offered_date(self, store):
+        result = self.booked(store, "This Tuesday at 12 PM is good.")
+        assert result.confirmed
+        assert result.slot.date == dt.date(2024, 4, 30)
+
+    def test_next_weekday_still_means_the_following_week(self, store):
+        result = self.booked(store, "Next Tuesday at 11 AM please.")
+        assert result.requested.date() == dt.date(2024, 5, 7)
+
+    def test_explicit_date_is_taken_literally(self, store):
+        result = self.booked(store, "7 May 2024 at 11 AM please.")
+        assert result.requested.date() == dt.date(2024, 5, 7)
+
+    def test_weekday_that_was_never_offered_is_left_alone(self, store):
+        result = self.booked(store, "Friday at 11 AM instead?")
+        assert result.requested.date() == dt.date(2024, 5, 3)
+
+    def test_offer_from_an_earlier_turn_still_counts(self, store):
+        """Candidates go back to a time the bot offered two turns ago."""
+        context = ctx(
+            ("recruiter", self.OFFER),
+            ("candidate", "Can we set up an interview?"),
+            (
+                "recruiter",
+                "Could we schedule your interview for Tuesday 30 Apr 2024 at "
+                "2:00 PM or Tuesday 30 Apr 2024 at 3:00 PM?",
+            ),
+            ("candidate", "Tuesday at 11 AM works for me."),
+        )
+        result = SlotBooker(store).book_from(context)
+        assert result.confirmed
+        assert result.slot.date == dt.date(2024, 4, 30)
+        assert result.slot.time == dt.time(11, 0)
+
+    def test_bare_time_still_matches_the_offer(self, store):
+        result = self.booked(store, "11 AM works.")
+        assert result.confirmed
+        assert result.slot.date == dt.date(2024, 4, 30)
 
 
 class TestSlotFormatting:

@@ -105,8 +105,20 @@ def _resolve_date_match(m: re.Match, anchor: dt.date) -> dt.date:
     return candidate
 
 
-def parse_offers(text: str, anchor: dt.datetime) -> list[tuple[dt.date, dt.time | None]]:
-    """Every date/time offer in the text, in order.
+def _is_loose_weekday(m: re.Match) -> bool:
+    """A weekday name on its own, with no explicit date and no "next".
+
+    These resolve to the following such day, so "Tuesday" said on a Tuesday
+    lands a week out. Callers holding real offers use this to spot the cases
+    where the candidate probably meant one of them.
+    """
+    return bool(m.group("day")) and (m.group("rel") or "").lower() != "next"
+
+
+def parse_offers_with_source(
+    text: str, anchor: dt.datetime
+) -> list[tuple[dt.date, dt.time | None, bool]]:
+    """Every offer, plus whether its date came from a loose weekday.
 
     Messages often hold two slots - "this Friday at 11 AM or next Monday at
     9 AM" - so each date takes the time that follows it, not one from the
@@ -118,11 +130,16 @@ def parse_offers(text: str, anchor: dt.datetime) -> list[tuple[dt.date, dt.time 
         return []
     time_matches = list(_TIME_RE.finditer(text))
 
-    offers: list[tuple[dt.date, dt.time | None]] = []
+    offers: list[tuple[dt.date, dt.time | None, bool]] = []
     for i, dm in enumerate(date_matches):
         boundary = date_matches[i + 1].start() if i + 1 < len(date_matches) else len(text)
         paired = next((tm for tm in time_matches if dm.end() <= tm.start() < boundary), None)
-        offers.append((_resolve_date_match(dm, anchor.date()), _to_time(paired)))
+        offers.append(
+            (_resolve_date_match(dm, anchor.date()), _to_time(paired), _is_loose_weekday(dm))
+        )
     return offers
 
 
+def parse_offers(text: str, anchor: dt.datetime) -> list[tuple[dt.date, dt.time | None]]:
+    """Every date/time offer in the text, in order."""
+    return [(date, time) for date, time, _ in parse_offers_with_source(text, anchor)]
